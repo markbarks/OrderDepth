@@ -20,7 +20,7 @@ inbox.onmessage = function (message) {
                     { x: 0, y: data.bids[0].volume },
                     { x: 1, y: data.asks[0].volume }
                 ],
-                color: 'LightBlue'
+                color: 'DarkBlue'
             },
             {
                 data: [
