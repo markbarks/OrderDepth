@@ -1,0 +1,16 @@
+{
+    "manifest_version": 2,
+    "name": "Order Depth Window",
+    "description": "",
+    "version": "0.1",
+    "app": {
+        "background": {
+            "scripts": ["main.js"]
+        }
+    },
+    "permissions": ["webview"],
+    "icons": {
+        "16": "calculator-16.png",
+        "128": "calculator-128.png"
+    }
+}

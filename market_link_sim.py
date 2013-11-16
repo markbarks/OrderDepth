@@ -31,14 +31,14 @@ def start_sending_depth_feed():
         depth = create_depth_feed()
 
         depth_json = json.dumps(depth)
-        print depth_json
+        # print depth_json
         channel.basic_publish(exchange='',
                               routing_key='mli',
                               properties=pika.BasicProperties(
                                   content_type='application/json',
                               ),
                               body=depth_json)
-        time.sleep(.1)
+        time.sleep(.5)
 
 
 if __name__ == '__main__':
