@@ -1,12 +1,14 @@
+from gevent.pywsgi import WSGIServer
+
 from Queue import Queue
 import threading
 from flask import Flask, render_template
 from flask.ext.sockets import Sockets
+from geventwebsocket import WebSocketHandler
 import pika
 
 
 app = Flask(__name__)
-
 sockets = Sockets(app)
 
 
@@ -45,3 +47,5 @@ def start_consumer():
 
 consumer_thread = start_consumer()
 
+http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)
+http_server.serve_forever()
