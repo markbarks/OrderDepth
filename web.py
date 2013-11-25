@@ -6,7 +6,7 @@ from flask import Flask, render_template
 from flask.ext.sockets import Sockets
 from geventwebsocket import WebSocketHandler
 import pika
-from ob_converter import convert_ob
+from order_depth.ob_converter import convert_ob
 
 
 app = Flask(__name__)
@@ -50,5 +50,6 @@ def start_consumer():
 
 consumer_thread = start_consumer()
 
-http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)
-http_server.serve_forever()
+# if windows
+# http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)
+# http_server.serve_forever()

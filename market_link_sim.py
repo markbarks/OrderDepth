@@ -38,7 +38,7 @@ def start_sending_depth_feed():
                                   content_type='application/json',
                               ),
                               body=depth_json)
-        time.sleep(.5)
+        time.sleep(1)
 
 
 if __name__ == '__main__':
