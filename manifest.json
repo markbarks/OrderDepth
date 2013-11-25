@@ -10,7 +10,7 @@
     },
     "permissions": ["webview"],
     "icons": {
-        "16": "calculator-16.png",
-        "128": "calculator-128.png"
+        "16": "static/img/Database-16.png",
+        "128": "static/img/Database-128.png"
     }
 }
