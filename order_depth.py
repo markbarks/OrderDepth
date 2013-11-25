@@ -6,6 +6,7 @@ from flask import Flask, render_template
 from flask.ext.sockets import Sockets
 from geventwebsocket import WebSocketHandler
 import pika
+from ob_converter import convert_ob
 
 
 app = Flask(__name__)
@@ -24,7 +25,9 @@ q = Queue()
 def outbox(ws):
     while ws.socket is not None:
         item = q.get(block=True)
-        ws.send(item)
+        ob = convert_ob(item)
+        print ob
+        ws.send(ob)
 
 
 def receive_command():

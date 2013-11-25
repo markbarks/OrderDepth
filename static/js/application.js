@@ -1,7 +1,85 @@
 var inbox = new ReconnectingWebSocket("ws://localhost:8000/receive");
-var outbox = new ReconnectingWebSocket("ws://localhost:8000/submit");
+//var outbox = new ReconnectingWebSocket("ws://localhost:8000/submit");
 
-var palette = new Rickshaw.Color.Palette();
+
+long_short_data = [
+    {
+        key: '1',
+        color: '#d62728',
+        values: [
+            {
+                "label": "Bid",
+                "value": -1.8746444827653
+            },
+            {
+                "label": "Ask",
+                "value": 10.8746444827653
+            }
+        ]
+    },
+    {
+        key: '2',
+        color: '#1f77b4',
+        values: [
+            {
+                "label": "Bid",
+                "value": -25.307646510375
+            }  ,
+            {
+                "label": "Ask",
+                "value": 10.8746444827653
+            }
+        ]
+    },
+    {
+        key: '3',
+        color: '#2ca02c',
+        values: [
+            {
+                "label": "Bid",
+                "value": -25.307646510375
+            } ,
+            {
+                "label": "Ask",
+                "value": 10.8746444827653
+            }
+        ]
+    }
+];
+
+function createChart(data) {
+    var chart;
+    nv.addGraph(function () {
+        chart = nv.models.multiBarHorizontalChart()
+            .x(function (d) {
+                return d.label
+            })
+            .y(function (d) {
+                return d.value
+            })
+            .margin({top: 30, right: 20, bottom: 50, left: 175})
+            .showValues(true)
+            //.tooltips(false)
+            .barColor(d3.scale.category20().range())
+            .transitionDuration(250)
+            .stacked(true)
+            .showControls(false);
+
+        chart.yAxis.tickFormat(d3.format(',.0f'));
+
+        d3.select('#chart svg')
+            .datum(long_short_data)
+            .call(chart);
+
+        nv.utils.windowResize(chart.update);
+
+        chart.dispatch.on('stateChange', function (e) {
+            nv.log('New State:', JSON.stringify(e));
+        });
+
+        return chart;
+    });
+}
 
 
 inbox.onmessage = function (message) {
@@ -9,55 +87,11 @@ inbox.onmessage = function (message) {
 
     $("#chart").empty();
 
-    console.log(data.bids[0].volume);
-
-    var graph = new Rickshaw.Graph({
-        element: document.querySelector("#chart"),
-        renderer: 'bar',
-        series: [
-            {
-                data: [
-                    { x: 0, y: data.bids[0].volume },
-                    { x: 1, y: data.asks[0].volume }
-                ],
-                color: 'DarkBlue'
-            },
-            {
-                data: [
-                    { x: 0, y: data.bids[1].volume },
-                    { x: 1, y: data.asks[1].volume }
-                ],
-                color: 'LightGreen'
-            },
-            {
-                data: [
-                    { x: 0, y: data.bids[2].volume },
-                    { x: 1, y: data.asks[2].volume }
-                ],
-                color: 'NavajoWhite'
-            },
-            {
-                data: [
-                    { x: 0, y: data.bids[3].volume },
-                    { x: 1, y: data.asks[3].volume }
-                ],
-                color: 'SandyBrown'
-            },
-            {
-                data: [
-                    { x: 0, y: data.bids[4].volume },
-                    { x: 1, y: data.asks[4].volume }
-                ],
-                color: 'FireBrick'
-            }
-        ]
-    });
-
-//    graph.setSeries(seriesDataArr);
-//    graph.update();
-
-    graph.render();
+    console.log(data);
+    createChart(data)
 };
+
+
 
 inbox.onclose = function () {
     console.log('inbox closed');
