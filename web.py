@@ -25,9 +25,9 @@ q = Queue()
 def outbox(ws):
     while ws.socket is not None:
         item = q.get(block=True)
-        ob = convert_ob(item)
-        print ob
-        ws.send(ob)
+        # ob = convert_ob(item)
+        print item
+        ws.send(item)
 
 
 def receive_command():
